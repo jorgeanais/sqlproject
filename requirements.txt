@@ -1,0 +1,5 @@
+sqlmodel
+fastapi[all]
+numpy
+matplotlib
+astropy
