@@ -3,3 +3,6 @@ fastapi[all]
 numpy
 matplotlib
 astropy
+pandas
+ipython
+black
