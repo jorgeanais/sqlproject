@@ -48,11 +48,10 @@ def check_image_exists(image: Image):
 
 
 def populate_db_with_images():
-    BASE_DATA_PATH = (
-        "/Users/jorgeanais/Documents/data/HST"  # "/home/jorge/Documents/data/hst_data"
-    )
+    BASE_DATA_PATH = "/home/jorge/Documents/data/hst_data" # "/Users/jorgeanais/Documents/data/HST"
     data_path = Path(BASE_DATA_PATH)
     images = list_images(data_path)
+    
     
     with Session(engine) as session:
         for image in images:

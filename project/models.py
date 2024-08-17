@@ -11,7 +11,11 @@ class Parameter(SQLModel, table=True):
     psf: str = Field()
     out: str = Field()
     extra: Optional[str] = Field(default=None)
-    runs: List["Run"] = Relationship(back_populates="parameter")
+    
+    runs: Optional["Run"] = Relationship(
+        sa_relationship_kwargs={'uselist': False},
+        back_populates="parameter"
+    )
 
 
 class Target(SQLModel, table=True):
@@ -43,21 +47,17 @@ class Result(SQLModel, table=True):
     y_chip: float = Field()
     x_cte_corr: float = Field()
     y_cte_corr: float = Field()
-    U_dist_corr_wcs: float = Field()
-    V_dist_corr_wcs: float = Field()
+    u_dist_corr_wcs: float = Field()
+    v_dist_corr_wcs: float = Field()
     ra: float = Field()
     dec: float = Field()
     m_inst: float = Field()
     m_cte_corr: float = Field()
-    w_cte_pixa_corr: float = Field()
     w_cte_pixa_corr_zp: float = Field()
-    reg_xy: Optional[str] = Field(
-        default=None,
-    )
-    reg_rd: Optional[str] = Field(
-        default=None,
-    )
-    runs: List["Run"] = Relationship(back_populates="result")
+    
+    run_id: Optional[str] = Field(default=None, foreign_key="run.id")
+    run: Optional["Run"] = Relationship(back_populates="results")
+    
 
 
 class Run(SQLModel, table=True):
@@ -67,7 +67,14 @@ class Run(SQLModel, table=True):
     date: datetime.datetime = Field(default=datetime.datetime.now)
     image_filename: Optional[int] = Field(default=None, foreign_key="image.filename")
     image: Optional[Image] = Relationship(back_populates="runs")
+    result_file: Optional[str] = Field(default=None)
+    reg_xy_file: Optional[str] = Field(default=None)
+    reg_rd_file: Optional[str] = Field(default=None)
+    
+    results: List["Result"] = Relationship(back_populates="run")
+    #parameter: Optional["Parameter"] = Relationship(back_populates="result") # MOD
+    
+    
     parameter_id: Optional[int] = Field(default=None, foreign_key="parameter.id")
     parameter: Optional[Parameter] = Relationship(back_populates="runs")
-    result_id: Optional[int] = Field(default=None, foreign_key="result.id")
-    result: Optional[Result] = Relationship(back_populates="runs")
+    
