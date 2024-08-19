@@ -12,17 +12,22 @@ def get_image_from_db(filename: str) -> Image:
         statement = select(Image).where(Image.filename == filename)
         results = session.exec(statement)
         image = results.one()
-    
+
     return image
 
 
 def get_psf_from_db(image: Image) -> PSF:
     """Auto find the PSF for the image based on the band"""
     with Session(engine) as session:
-        statement = select(PSF).where(PSF.band == image.band).where(PSF.psftype == "STDPSF").where(PSF.instrument == "WFC3UV") 
+        statement = (
+            select(PSF)
+            .where(PSF.band == image.band)
+            .where(PSF.psftype == "STDPSF")
+            .where(PSF.instrument == "WFC3UV")
+        )
         results = session.exec(statement)
         psf = results.one()
-    
+
     return psf
 
 

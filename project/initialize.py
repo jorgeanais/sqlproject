@@ -17,7 +17,7 @@ def create_test_images():
         session.add(target_minni114)
         session.add(target_minni666)
         session.commit()
-        
+
         image_test_1 = Image(
             filename="ifb444010_drc.fits",
             type="drc",
@@ -59,11 +59,10 @@ def check_psf_exists(psf: PSF):
 
 def populate_db_with_images() -> None:
     """Read all the fits images in the IMAGE_DATA_PATH folder and add it to the database"""
-    IMAGE_DATA_PATH = Config.IMAGE_DATA_PATH 
+    IMAGE_DATA_PATH = Config.IMAGE_DATA_PATH
     data_path = Path(IMAGE_DATA_PATH)
     images = list_images(data_path)
-    
-    
+
     with Session(engine) as session:
         for image in images:
             db_image = check_image_exists(image)
@@ -73,7 +72,7 @@ def populate_db_with_images() -> None:
             elif db_image.path != image.path:
                 db_image.path = image.path
                 session.add(db_image)
-        
+
         session.commit()
 
 
@@ -82,7 +81,7 @@ def populate_db_with_psf():
     PSF_DATA_PATH = Config.PSF_DATA_PATH
     data_path = Path(PSF_DATA_PATH)
     psfs = list_psfs(data_path)
-    
+
     with Session(engine) as session:
         for psf in psfs:
             db_psf = check_psf_exists(psf)
@@ -92,7 +91,7 @@ def populate_db_with_psf():
             elif db_psf.path != psf.path:
                 db_psf.path = psf.path
                 session.add(db_psf)
-        
+
         session.commit()
 
 

@@ -10,7 +10,7 @@ from .models import Image, Target, PSF
 def read_fits_header(fits_path: Path) -> dict:
     with fits.open(fits_path) as hdul:
         header = hdul[0].header
-    
+
     header_selection = {
         "filename": fits_path.name,
         "type": fits_path.name[-8:-5],
@@ -29,7 +29,7 @@ def read_fits_header(fits_path: Path) -> dict:
         "dec": header["DEC_TARG"],
         "detector": header["DETECTOR"],
     }
-    
+
     return header_selection
 
 
@@ -49,13 +49,13 @@ def get_targets(df: pd.DataFrame) -> dict[str, Target]:
         row_dict = row.to_dict()
         target = Target(**row_dict)
         targets_dict = {target.name: target}
-    
+
     return targets_dict
 
 
 def get_images(df: pd.DataFrame) -> list[Image]:
     targets_dict = get_targets(df)
-    
+
     df_images = df[["filename", "type", "path", "exptime", "band", "dateobs", "name"]]
     output_list = []
 
@@ -68,7 +68,7 @@ def get_images(df: pd.DataFrame) -> list[Image]:
             row_dict["dateobs"] = None
         image = Image(**row_dict)
         output_list.append(image)
-    
+
     return output_list
 
 
@@ -83,7 +83,7 @@ def list_images(data_path: Path) -> list[Image]:
     return images
 
 
-def list_psfs(data_path: Path)-> list[PSF]:
+def list_psfs(data_path: Path) -> list[PSF]:
     """Generate a list of psf. Data extracted from filename"""
     fits_paths = list(data_path.glob("**/*.fits"))
     psf_list = []
