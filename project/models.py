@@ -8,10 +8,10 @@ class Parameter(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     hmin: int = Field()
     fmin: float = Field()
-    psf: str = Field()
     out: str = Field()
     extra: Optional[str] = Field(default=None)
-    
+    psf_filename: Optional[str] = Field(default=None, foreign_key="psf.filename")
+    psf: Optional["PSF"] = Relationship(back_populates="parameter")
     runs: Optional["Run"] = Relationship(
         sa_relationship_kwargs={'uselist': False},
         back_populates="parameter"
@@ -55,7 +55,7 @@ class Result(SQLModel, table=True):
     m_cte_corr: float = Field()
     w_cte_pixa_corr_zp: float = Field()
     
-    run_id: Optional[str] = Field(default=None, foreign_key="run.id")
+    run_id: Optional[int] = Field(default=None, foreign_key="run.id")
     run: Optional["Run"] = Relationship(back_populates="results")
     
 
@@ -77,4 +77,16 @@ class Run(SQLModel, table=True):
     
     parameter_id: Optional[int] = Field(default=None, foreign_key="parameter.id")
     parameter: Optional[Parameter] = Relationship(back_populates="runs")
+
+
+class PSF(SQLModel, table=True):
+    filename: str = Field(primary_key=True)
+    path: str = Field()
+    psftype: str = Field()
+    instrument: str = Field()
+    band: str = Field(index=True)
     
+    parameter: Optional[Parameter] = Relationship(
+        sa_relationship_kwargs={'uselist': False},
+        back_populates="psf"
+    )

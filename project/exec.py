@@ -8,12 +8,13 @@ from astropy.table import Table
 from sqlmodel import Session, select
 
 from project.database import engine
-from project.models import Parameter, Result, Image, Run, Target
+from project.models import Image, Parameter, PSF, Result, Run, Target
 
 
-def exec_hst1pass(
+def hst1pass(
     image: Image,
     parameter: Parameter,
+    psf: PSF,
     name: str = "",
     description: str = "",
     output_dir: Optional[Path] = None
@@ -22,7 +23,7 @@ def exec_hst1pass(
     options = [
         f"HMIN={parameter.hmin}",
         f"FMIN={parameter.fmin}",
-        f"PSF={parameter.psf}" ,
+        f"PSF={psf.path}/{psf.filename}" ,
         "REG=xy",
         "REG=rd",
         "OUTPUT=xympqXYMUVWrd",
@@ -36,8 +37,8 @@ def exec_hst1pass(
     
     # Excecute command
     result = subprocess.run(cmd, capture_output=True, text=True)
-    # print("Salida estándar:", result.stdout)
-    # print("Salida de error:", result.stderr)
+    print("Salida estándar:", result.stdout)
+    print("Salida de error:", result.stderr)
     
     if result.returncode == 0:
         print("Command executed successfully.")
@@ -102,47 +103,3 @@ def exec_hst1pass(
     
     
     return results
-
-
-def main():
-    # target = Target(
-    #     name="MINNI144",
-    #     ra=280.0375,
-    #     dec=-30.57388888889,
-    # )
-    with Session(engine) as session:
-        statement = select(Target).where(Target.name == "MINNI144")
-        results = session.exec(statement)
-        target = results.first()
-    
-    # image = Image(
-    #     filename="ifb444kdq_flt.fits",
-    #     type="flt",
-    #     path="/home/jorge/Documents/data/hst_data/HST_Minni144/",
-    #     exptime="515.0",
-    #     band="F814W",
-    #     dateobs=datetime.datetime.fromisoformat("2024-03-08 01:25:20.000000"),
-    #     target=target
-    # )
-    
-    with Session(engine) as session:
-        statement = select(Image).where(Image.filename == "ifb444kdq_flt.fits")
-        results = session.exec(statement)
-        image = results.first()
-    
-    parameter = Parameter(
-        hmin=5,
-        fmin=2500,
-        psf="/home/jorge/Documents/code/hst1pass/sourcecode/HST1PASS/LIB/PSFs/STDPSFs/WFC3UV/STDPSF_WFC3UV_F606W.fits",
-        out="xympqXYMUVWrd",
-    )
-    
-    results = exec_hst1pass(image, parameter=parameter, output_dir=Path("/tmp/"))
-    
-    with Session(engine) as session:
-        for r in results:
-            session.add(r)
-        session.commit()
-
-if __name__ == "__main__":
-    main()

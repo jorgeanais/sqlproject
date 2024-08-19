@@ -4,7 +4,7 @@ import datetime
 from astropy.io import fits
 import pandas as pd
 
-from .models import Image, Target
+from .models import Image, Target, PSF
 
 
 def read_fits_header(fits_path: Path) -> dict:
@@ -72,8 +72,30 @@ def get_images(df: pd.DataFrame) -> list[Image]:
     return output_list
 
 
+def get_psfs(df: pd.DataFrame) -> list[PSF]:
+    pass
+
+
 def list_images(data_path: Path) -> list[Image]:
     fits_paths = list(data_path.glob("**/*.fits"))
     df = build_table(fits_paths)
     images = get_images(df)
     return images
+
+
+def list_psfs(data_path: Path)-> list[PSF]:
+    """Generate a list of psf. Data extracted from filename"""
+    fits_paths = list(data_path.glob("**/*.fits"))
+    psf_list = []
+    for fits_path in fits_paths:
+        file_name = str(fits_path.name)
+        details = file_name.replace(".fits", "").split("_")
+        psf = PSF(
+            filename=file_name,
+            path=str(fits_path.parent),
+            psftype=details[0],
+            instrument=details[1],
+            band=details[2],
+        )
+        psf_list.append(psf)
+    return psf_list
