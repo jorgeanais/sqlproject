@@ -1,4 +1,5 @@
 import datetime
+import logging
 from pathlib import Path
 from typing import List, Optional
 import shutil
@@ -37,7 +38,7 @@ def hst1pass(
     cmd += options
     image_path = Path(image.path) / image.filename
     cmd += [str(image_path)]
-    print(cmd)
+    logging.info(cmd)
 
     # Excecute command
     result = subprocess.run(cmd, capture_output=True, text=True)
@@ -45,9 +46,9 @@ def hst1pass(
     print("Salida de error:", result.stderr)
 
     if result.returncode == 0:
-        print("Command executed successfully.")
+        logging.info("Command executed successfully.")
     else:
-        print("Command failed with return code:", result.returncode)
+        logging.info("Command failed with return code:", result.returncode)
         print("Error message:", result.stderr)
         raise RuntimeError("Failed to execute command")
 

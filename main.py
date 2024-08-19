@@ -1,5 +1,6 @@
 import click
 import datetime
+import logging
 from pathlib import Path
 import uuid
 
@@ -14,12 +15,25 @@ from project.settings import Config
 @click.option("-f", "--filename", help="Input fits file", required=True)
 @click.option("--hmin", help="", type=int)
 @click.option("--fmin", help="", type=int)
-@click.option("-d", "--description", help="Description", type=int)
-def main(filename, hmin, fmin, description):
+@click.option("-n", "--name", help="Optional run id", type=str, default="")
+@click.option("-d", "--description", help="Description", type=str, default="")
+def main(filename, hmin, fmin, description, name):
+    
+    # Log
+    logging.basicConfig(
+        format="%(asctime)s %(levelname)s %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+        filename="program.log",
+        level=logging.INFO,
+    )
+    # logger = logging.getLogger('sqlalchemy.engine')
+    # logger.setLevel(logging.DEBUG)
+    logging.info("--Program Started--")
+    logging.info(f"Input file: {filename}")
+    logging.info(f"Params: {name=} {hmin=} {fmin=} {description=}")
 
     # Check if input file is in the db
     image = get_image_from_db(filename)
-    print(image)
     psf = get_psf_from_db(image)
 
     # Create parameter
@@ -40,8 +54,9 @@ def main(filename, hmin, fmin, description):
     )
 
     output_dir.mkdir(parents=True)  # Create the directory
-    results = hst1pass(image, parameter, psf, output_dir=output_dir)
+    results = hst1pass(image, parameter, psf, name=name, description=description, output_dir=output_dir)
     commit_results(results)
+    logging.info("Results commited to the DB")
 
 
 if __name__ == "__main__":
