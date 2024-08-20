@@ -23,7 +23,7 @@ def main(filename, hmin, fmin, description, name):
     logging.basicConfig(
         format="%(asctime)s %(levelname)s %(message)s",
         datefmt="%Y-%m-%d %H:%M:%S",
-        filename="program.log",
+        filename="logfile.txt",
         level=logging.INFO,
     )
     # logger = logging.getLogger('sqlalchemy.engine')

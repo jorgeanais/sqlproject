@@ -11,7 +11,7 @@ class Parameter(SQLModel, table=True):
     out: str = Field()
     extra: Optional[str] = Field(default=None)
     psf_filename: Optional[str] = Field(default=None, foreign_key="psf.filename")
-    psf: Optional["PSF"] = Relationship(back_populates="parameter")
+    psf: Optional["PSF"] = Relationship(back_populates="parameters")
     runs: Optional["Run"] = Relationship(
         sa_relationship_kwargs={"uselist": False}, back_populates="parameter"
     )
@@ -83,6 +83,4 @@ class PSF(SQLModel, table=True):
     instrument: str = Field()
     band: str = Field(index=True)
 
-    parameter: Optional[Parameter] = Relationship(
-        sa_relationship_kwargs={"uselist": False}, back_populates="psf"
-    )
+    parameters: list[Parameter] = Relationship(back_populates="psf")
