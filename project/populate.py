@@ -92,7 +92,7 @@ def list_psfs(data_path: Path) -> list[PSF]:
         details = file_name.replace(".fits", "").split("_")
         psf = PSF(
             filename=file_name,
-            path=str(fits_path.parent),
+            path=str(fits_path),
             psftype=details[0],
             instrument=details[1],
             band=details[2],

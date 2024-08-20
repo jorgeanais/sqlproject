@@ -6,7 +6,7 @@ import uuid
 
 from project.database import engine
 from project.exec import hst1pass
-from project.sqlops import commit_results, get_image_from_db, get_psf_from_db
+from project.sqlops import commit_results, get_apphot, get_image_from_db, get_psf_from_db
 from project.models import Parameter, Result, Image, Run, Target
 from project.settings import Config
 
@@ -17,7 +17,8 @@ from project.settings import Config
 @click.option("--fmin", help="", type=int)
 @click.option("-n", "--name", help="Optional run id", type=str, default="")
 @click.option("-d", "--description", help="Description", type=str, default="")
-def main(filename, hmin, fmin, description, name):
+@click.option("--apphot", help="Use APHOT PSF", is_flag=True, default=False)
+def main(filename, hmin, fmin, description, name, apphot):
     
     # Log
     logging.basicConfig(
@@ -34,7 +35,11 @@ def main(filename, hmin, fmin, description, name):
 
     # Check if input file is in the db
     image = get_image_from_db(filename)
-    psf = get_psf_from_db(image)
+    
+    if apphot:
+        psf = get_apphot("APPHOT 3.5 6 9")
+    else:
+        psf = get_psf_from_db(image)
 
     # Create parameter
     parameter = Parameter(

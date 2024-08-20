@@ -30,6 +30,17 @@ def get_psf_from_db(image: Image) -> PSF:
 
     return psf
 
+def get_apphot(apphot: str) -> PSF:
+    """Auto find the PSF for the image based on the band"""
+    with Session(engine) as session:
+        statement = (
+            select(PSF)
+            .where(PSF.filename == apphot)
+        )
+        results = session.exec(statement)
+        psf = results.one()
+
+    return psf
 
 def commit_results(results: List[Result]) -> None:
     with Session(engine) as session:

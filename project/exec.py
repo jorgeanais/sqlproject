@@ -24,11 +24,11 @@ def hst1pass(
     Excecute the hst1pass program according to the given parameters.
     Output files are moved to the indicated outputdir
     """
-
+    
     options = [
         f"HMIN={parameter.hmin}",
         f"FMIN={parameter.fmin}",
-        f"PSF={psf.path}/{psf.filename}",
+        f"PSF={psf.path}",
         "REG=xy",
         "REG=rd",
         "OUTPUT=xympqXYMUVWrd",

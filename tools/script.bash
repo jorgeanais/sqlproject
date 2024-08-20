@@ -5,6 +5,7 @@ files=(
     "ifb444juq_flt.fits"
     "ifb444kdq_flt.fits"
     "ifb444020_drc.fits"
+    "ifb444020_drz.fits"
     "ifb444k0q_flt.fits"
     "ifb444010_drc.fits"
     "ifb444010_drz.fits"
@@ -239,3 +240,8 @@ python main.py -f "ifb444juq_flc.fits" --hmin 3 --fmin 100 --name "h3f100" --des
 python main.py -f "ifb444jvq_flt.fits" --hmin 3 --fmin 100 --name "h3f100" --description "Sarajedini et al. 2007 values snr sqrt(100) = 10"
 python main.py -f "ifb444jvq_flc.fits" --hmin 3 --fmin 100 --name "h3f100" --description "Sarajedini et al. 2007 values snr sqrt(100) = 10"
 python main.py -f "ifb444kiq_flc.fits" --hmin 3 --fmin 100 --name "h3f100" --description "Sarajedini et al. 2007 values snr sqrt(100) = 10"
+# Aperture photometry
+python main.py -f "ifb444020_drc.fits" --hmin 3 --fmin 100 --name "h3f100app" --description "Apperture photometry APPHOT 3.5 6 9" --apphot
+python main.py -f "ifb444020_drz.fits" --hmin 3 --fmin 100 --name "h3f100app" --description "Apperture photometry APPHOT 3.5 6 9" --apphot
+python main.py -f "ifb444010_drc.fits" --hmin 3 --fmin 100 --name "h3f100app" --description "Apperture photometry APPHOT 3.5 6 9" --apphot
+python main.py -f "ifb444010_drz.fits" --hmin 3 --fmin 100 --name "h3f100app" --description "Apperture photometry APPHOT 3.5 6 9" --apphot

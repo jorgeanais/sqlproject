@@ -94,6 +94,24 @@ def populate_db_with_psf():
 
         session.commit()
 
+def add_aperture_phot_psf():
+    
+    psf = PSF(
+            filename="APPHOT 3.5 6 9",
+            path="APPHOT 3.5 6 9",
+            psftype="APPHOT",
+            instrument="APPHOT",
+            band="APPHOT",
+        )
+    
+    with Session(engine) as session:
+        db_psf = check_psf_exists(psf)
+        if db_psf is None:
+            session.add(psf)
+        elif db_psf.path != psf.path:
+            db_psf.path = psf.path
+            session.add(db_psf)
+        session.commit()
 
 def main():
     """Run this to create the DB structure and populate it"""
@@ -101,7 +119,9 @@ def main():
     # create_test_images()
     populate_db_with_images()
     populate_db_with_psf()
+    add_aperture_phot_psf()
 
 
 if __name__ == "__main__":
     main()
+    
