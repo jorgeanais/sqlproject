@@ -13,6 +13,8 @@ def create_test_images():
     """Manual creation of SQLModel objects"""
     with Session(engine) as session:
         target_minni114 = Target(name="MINNI144", ra=280.0375, dec=-30.5739)
+        target_minni114 = Target(name="MINNI146", ra=283.05, dec=-31.94583)
+        target_minni114 = Target(name="MINNI330", ra=283.9083, dec=-29.99)
         target_minni666 = Target(name="MINNI666", ra=66.66, dec=-66.66)
         session.add(target_minni114)
         session.add(target_minni666)
@@ -62,6 +64,7 @@ def populate_db_with_images() -> None:
     IMAGE_DATA_PATH = Config.IMAGE_DATA_PATH
     data_path = Path(IMAGE_DATA_PATH)
     images = list_images(data_path)
+    print(images)
 
     with Session(engine) as session:
         for image in images:

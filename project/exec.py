@@ -25,13 +25,15 @@ def hst1pass(
     Output files are moved to the indicated outputdir
     """
     
+    OUTPUT = "xympqXYMUVWrde"
+    
     options = [
         f"HMIN={parameter.hmin}",
         f"FMIN={parameter.fmin}",
         f"PSF={psf.path}",
         "REG=xy",
         "REG=rd",
-        "OUTPUT=xympqXYMUVWrd",
+        f"OUTPUT={OUTPUT}",
     ]
 
     cmd = ["hst1pass.e"]
@@ -53,12 +55,12 @@ def hst1pass(
         raise RuntimeError("Failed to execute command")
 
     # Expected resulting files
-    result_file = image.filename.replace(".fits", ".xympqXYMUVWrd")
+    result_file = image.filename.replace(".fits", f".{OUTPUT}")  # MODIFICADO
     reg_xy_file = image.filename.replace(".fits", "_xy.reg")
     reg_rd_file = image.filename.replace(".fits", "_rd.reg")
 
     # Read results
-    COLUMNS = ["x", "y", "m", "p", "q", "X", "Y", "M", "U", "V", "W", "r", "d"]
+    COLUMNS = ["x", "y", "m", "p", "q", "X", "Y", "M", "U", "V", "W", "r", "d", "e"]  # MODIFICADO
     t = Table.read(result_file, format="ascii", names=COLUMNS)
 
     # Move results
@@ -102,6 +104,7 @@ def hst1pass(
             m_inst=row["m"],
             m_cte_corr=row["M"],
             w_cte_pixa_corr_zp=row["W"],
+            error=row["e"],  # MODIFICADO
             run=run,
         )
         results.append(result)

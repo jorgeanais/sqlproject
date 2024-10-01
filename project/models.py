@@ -53,6 +53,7 @@ class Result(SQLModel, table=True):
     m_inst: float = Field()
     m_cte_corr: float = Field()
     w_cte_pixa_corr_zp: float = Field()
+    error: Optional[float] = Field(default=None)
 
     run_id: Optional[int] = Field(default=None, foreign_key="run.id")
     run: Optional["Run"] = Relationship(back_populates="results")

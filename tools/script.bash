@@ -158,7 +158,7 @@ python main.py -f "ifb444kdq_flc.fits" --hmin 5 --fmin 500 --name "h5f500" --des
 python main.py -f "ifb444kbq_flc.fits" --hmin 5 --fmin 500 --name "h5f500" --description "Suggested parameters with h and f low"
 python main.py -f "ifb444juq_flc.fits" --hmin 5 --fmin 500 --name "h5f500" --description "Suggested parameters with h and f low"
 python main.py -f "ifb444jvq_flt.fits" --hmin 5 --fmin 500 --name "h5f500" --description "Suggested parameters with h and f low"
-python main.py -f "ifb444jvq_flc.fits" --hmin 5 --fmin 500 --name "h5f500" --description "Suggested parameters with h and f low"
+python main.py -f "ifb444jvq_flc.fits" --hmin 5 --fmin 500 --nam5e "h5f500" --description "Suggested parameters with h and f low"
 python main.py -f "ifb444kiq_flc.fits" --hmin 5 --fmin 500 --name "h5f500" --description "Suggested parameters with h and f low"
 # Caso extremo
 python main.py -f "ifb444kiq_flt.fits" --hmin 2 --fmin 100 --name "h2f100" --description "Extremely low fmin and hmin values"
@@ -245,3 +245,7 @@ python main.py -f "ifb444020_drc.fits" --hmin 3 --fmin 100 --name "h3f100app" --
 python main.py -f "ifb444020_drz.fits" --hmin 3 --fmin 100 --name "h3f100app" --description "Apperture photometry APPHOT 3.5 6 9" --apphot
 python main.py -f "ifb444010_drc.fits" --hmin 3 --fmin 100 --name "h3f100app" --description "Apperture photometry APPHOT 3.5 6 9" --apphot
 python main.py -f "ifb444010_drz.fits" --hmin 3 --fmin 100 --name "h3f100app" --description "Apperture photometry APPHOT 3.5 6 9" --apphot
+
+# Dante 22 aug 2024. Program Modified to include errors
+python main.py -f "ifb444k0q_flc.fits" --hmin 3 --fmin 100 --name "h3f100witherror" --description "Dante request with errors"
+python main.py -f "ifb444kbq_flc.fits" --hmin 3 --fmin 100 --name "h3f100witherror" --description "Dante request with errors"

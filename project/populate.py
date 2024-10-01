@@ -48,7 +48,7 @@ def get_targets(df: pd.DataFrame) -> dict[str, Target]:
     for index, row in df_unique_targets.iterrows():
         row_dict = row.to_dict()
         target = Target(**row_dict)
-        targets_dict = {target.name: target}
+        targets_dict[target.name] = target
 
     return targets_dict
 

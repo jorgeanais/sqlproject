@@ -34,7 +34,8 @@ def main(filename, hmin, fmin, description, name, apphot):
     logging.info(f"Params: {name=} {hmin=} {fmin=} {description=}")
 
     # Check if input file is in the db
-    image = get_image_from_db(filename)
+    input_file = Path(filename)
+    image = get_image_from_db(input_file.name)
     
     if apphot:
         psf = get_apphot("APPHOT 3.5 6 9")
